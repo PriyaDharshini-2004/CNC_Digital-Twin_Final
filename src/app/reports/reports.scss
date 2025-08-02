@@ -1,0 +1,211 @@
+$card-bg: linear-gradient(135deg, #23283a 60%, #2c3142 100%);
+$card-bg-alt: linear-gradient(135deg, #1a1e2a 60%, #23283a 100%);
+$text-main: #fff;
+$text-secondary: #b0b0b0;
+$brand-green: #7fff00;
+$brand-blue: #00eaff;
+$brand-yellow: #ffb300;
+$brand-red: #ff5252;
+$brand-orange: #ff6f00;
+$brand-purple: #b388ff;
+$border-radius: 18px;
+$shadow: 0 4px 24px 0 #0008;
+
+.reports-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 32px 32px 0 32px;
+  .title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $text-main;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    font-size: 1.1rem;
+    color: $text-secondary;
+  }
+  .export-btn {
+    margin-top: 8px;
+    font-weight: 600;
+    mat-icon { margin-right: 6px; }
+  }
+}
+$card-bg: linear-gradient(135deg, #23283a 60%, #2c3142 100%);
+$text-main: #fff;
+$text-secondary: #b0b0b0;
+$shadow: 0 4px 24px 0 #0008;
+
+.filters-card {
+  background: $card-bg;
+  border-radius: 18px;
+  box-shadow: $shadow;
+  margin: 24px 32px;
+  padding: 24px;
+
+  .filters-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $text-main;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+
+  .filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-end;
+
+    mat-form-field {
+      min-width: 180px;
+      flex: 1;
+    }
+
+    .refresh-field {
+  min-width: 180px;
+  height: 56px;
+  background: #fff;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-top: 2px; // ✅ This aligns it with mat-form-field
+
+  .refresh-btn {
+    width: 100%;
+    height: 100%;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #000;
+    text-transform: none;
+
+    mat-icon {
+      margin-right: 6px;
+      font-size: 20px;
+    }
+  }
+}
+
+  }
+}
+
+
+.stats-cards-row {
+  display: flex;
+  gap: 24px;
+  margin: 0 32px 24px 32px;
+  .stats-card {
+    flex: 1;
+    min-width: 180px;
+    background: $card-bg;
+    color: $text-main;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .stats-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .stats-label {
+      font-size: 1.1rem;
+      color: $text-secondary;
+      font-weight: 500;
+    }
+    &.oee .stats-value { color: $brand-green; }
+    &.running .stats-value { color: $brand-blue; }
+    &.total .stats-value { color: $brand-yellow; }
+    &.target .stats-value { color: $brand-orange; }
+  }
+  .refresh-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $card-bg;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    padding: 24px;
+    min-width: 180px;
+    .refresh-btn {
+      width: 100%;
+      font-weight: 600;
+      mat-icon { margin-right: 6px; }
+    }
+  }
+}
+
+.performers-row {
+  display: flex;
+  gap: 32px; // increased gap for more space
+  margin: 0 32px 32px 32px;
+  @media (max-width: 900px) {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .performers-card {
+    flex: 1;
+    background: $card-bg;
+    color: $text-main;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    padding: 24px;
+    margin-bottom: 0;
+    .performers-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: $text-main;
+      margin-bottom: 16px;
+    }
+    .performers-table {
+      .table-header, .table-row {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 8px;
+        align-items: center;
+        font-size: 1rem;
+        color: $text-main;
+        margin-bottom: 8px;
+      }
+      .table-row {
+        padding: 8px 0; // <-- Add this for vertical spacing
+        border-bottom: 1px solid rgba(255,255,255,0.05); // subtle line between rows
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+      .table-header {
+        font-weight: 700;
+        color: $text-secondary;
+        border-bottom: 1px solid #333;
+        padding-bottom: 4px;
+        margin-bottom: 12px; // more space after header
+      }
+      .oee-green { color: $brand-green; font-weight: 600; }
+      .oee-yellow { color: $brand-yellow; font-weight: 600; }
+      .status-badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        background: #23283a;
+        border: 1px solid #444;
+        &.running { color: $brand-green; border-color: $brand-green; }
+        &.maintenance { color: $brand-purple; border-color: $brand-purple; }
+        &.breakdown { color: $brand-red; border-color: $brand-red; }
+        &.idle { color: $brand-yellow; border-color: $brand-yellow; }
+      }
+    }
+  }
+}

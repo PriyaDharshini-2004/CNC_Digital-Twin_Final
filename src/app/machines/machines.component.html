@@ -1,0 +1,325 @@
+<mat-tab-group [selectedIndex]="getTabIndex()" (selectedIndexChange)="setTabIndex($event)">
+  <mat-tab label="Dashboard"></mat-tab>
+  <mat-tab label="Analytics"></mat-tab>
+  <mat-tab label="Machine Details"></mat-tab>
+  <mat-tab label="Master Data"></mat-tab>
+  <mat-tab label="Reports"></mat-tab>
+</mat-tab-group>
+
+<!-- Dashboard Section -->
+<div *ngIf="currentView === 'dashboard'">
+  <!-- Dashboard Cards -->
+  <div class="dashboard-cards">
+    <mat-card class="dashboard-card oee">
+      <div class="card-icon"><mat-icon>trending_up</mat-icon></div>
+      <div class="card-title">Overall OEE</div>
+      <div class="card-value">36.8%</div>
+      <div class="card-sub">
+        <mat-icon>trending_up</mat-icon>
+        <span>+2.3% from yesterday</span>
+      </div>
+    </mat-card>
+    <mat-card class="dashboard-card machines">
+      <div class="card-icon"><mat-icon>settings</mat-icon></div>
+      <div class="card-title">Active Machines</div>
+      <div class="card-value">8/30</div>
+      <div class="card-sub">22 in maintenance</div>
+    </mat-card>
+    <mat-card class="dashboard-card parts">
+      <div class="card-icon"><mat-icon>inventory_2</mat-icon></div>
+      <div class="card-title">Total Parts Today</div>
+      <div class="card-value">3,307</div>
+      <div class="card-sub">Target: 1,500</div>
+    </mat-card>
+    <mat-card class="dashboard-card cost">
+      <div class="card-icon"><mat-icon>attach_money</mat-icon></div>
+      <div class="card-title">Total Cost Today</div>
+      <div class="card-value">₹14,57,408</div>
+      <div class="card-sub">Labor + Tools + Machine</div>
+    </mat-card>
+  </div>
+  <div class="main-content-col">
+    <mat-card class="machine-status-card">
+      <div class="card-header">
+        <span>Machine Status Overview</span>
+        <div class="status-buttons">
+          <button mat-button class="status-btn running"><span></span>Running</button>
+          <button mat-button class="status-btn idle"><span></span>Idle</button>
+          <button mat-button class="status-btn breakdown"><span></span>Breakdown</button>
+          <button mat-button class="status-btn maintenance"><span></span>Maintenance</button>
+          <div class="pagination-controls">
+            <button mat-icon-button (click)="dash_prevPage()" [disabled]="dash_currentPage === 0">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <span>Page {{dash_currentPage + 1}} of {{dash_Math.ceil(dash_machineCards.length / dash_itemsPerPage)}}</span>
+            <button mat-icon-button (click)="dash_nextPage()" [disabled]="(dash_currentPage + 1) * dash_itemsPerPage >= dash_machineCards.length">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="machine-cards-row">
+        <ng-container *ngFor="let card of dash_paginatedMachineCards">
+          <mat-card class="machine-card" [ngClass]="card.status">
+            <div class="machine-card-header">
+              <div class="machine-title">{{ card.title }}</div>
+              <div class="machine-status" [ngClass]="card.status">{{ card.status }}</div>
+            </div>
+            <div class="machine-part">Part: {{ card.part }}</div>
+            <div class="machine-oee">OEE: {{ card.oee }}</div>
+            <!-- You may want to add a details button here -->
+          </mat-card>
+        </ng-container>
+      </div>
+    </mat-card>
+    <mat-card class="tool-monitoring-card">
+      <div class="card-header">Tool Monitoring</div>
+      <div class="tool-cards-row">
+        <ng-container *ngFor="let tool of dash_toolCards">
+          <mat-card class="tool-card" [ngClass]="tool.status">
+            <div class="tool-title">{{ tool.tool }}</div>
+            <div class="tool-name">{{ tool.name }}</div>
+            <div class="tool-amount">₹{{ tool.amount }}</div>
+            <div class="tool-percent">{{ tool.percent }}</div>
+            <div class="tool-life">{{ tool.life }}</div>
+          </mat-card>
+        </ng-container>
+      </div>
+    </mat-card>
+    <mat-card class="alerts-card">
+      <div class="card-header">Real-time Alerts</div>
+      <div class="alerts-cards-row">
+        <ng-container *ngFor="let alert of dash_alertCards">
+          <mat-card class="alert-card" [ngClass]="alert.type">
+            <mat-icon class="alert-icon" [ngStyle]="{'color': alert.iconColor}">{{ alert.icon }}</mat-icon>
+            <div class="alert-text-block">
+              <div class="alert-title">{{ alert.title }}</div>
+              <div class="alert-desc">{{ alert.desc }}</div>
+              <div class="alert-time">{{ alert.time }}</div>
+            </div>
+          </mat-card>
+        </ng-container>
+      </div>
+    </mat-card>
+  </div>
+  <mat-card class="performance-table-card">
+    <div class="card-header">
+      <span>Machine Performance Details</span>
+      <button mat-raised-button color="primary" (click)="dash_exportReport()">
+        <mat-icon>download</mat-icon> Export Report
+      </button>
+    </div>
+    <table mat-table [dataSource]="dash_machinePerformance" class="mat-elevation-z1">
+      <ng-container matColumnDef="machine">
+        <th mat-header-cell *matHeaderCellDef>Machine</th>
+        <td mat-cell *matCellDef="let row">{{ row.machine }}</td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="status-badge" [ngClass]="row.status.toLowerCase()">{{ row.status }}</span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="part">
+        <th mat-header-cell *matHeaderCellDef>Current Part</th>
+        <td mat-cell *matCellDef="let row">{{ row.part }}</td>
+      </ng-container>
+      <ng-container matColumnDef="runtime">
+        <th mat-header-cell *matHeaderCellDef>Runtime</th>
+        <td mat-cell *matCellDef="let row">{{ row.runtime }}</td>
+      </ng-container>
+      <ng-container matColumnDef="idle">
+        <th mat-header-cell *matHeaderCellDef>Idle Time</th>
+        <td mat-cell *matCellDef="let row">{{ row.idle }}</td>
+      </ng-container>
+      <ng-container matColumnDef="parts">
+        <th mat-header-cell *matHeaderCellDef>Parts Count</th>
+        <td mat-cell *matCellDef="let row">{{ row.parts }}</td>
+      </ng-container>
+      <ng-container matColumnDef="oee">
+        <th mat-header-cell *matHeaderCellDef>OEE</th>
+        <td mat-cell *matCellDef="let row">
+          <span [ngClass]="{'oee-green': row.oee !== '0%', 'oee-gray': row.oee === '0%'}">{{ row.oee }}</span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="cost">
+        <th mat-header-cell *matHeaderCellDef>Cost/Hr</th>
+        <td mat-cell *matCellDef="let row">{{ row.cost }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="dash_displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: dash_displayedColumns;"></tr>
+    </table>
+  </mat-card>
+</div>
+
+<!-- Analytics Section -->
+<div *ngIf="currentView === 'analytics'">
+  <div class="analytics-header">
+    <div class="analytics-title">Analytics Dashboard</div>
+    <div class="analytics-subtitle">Real-time performance metrics and insights</div>
+  </div>
+  <div class="analytics-top-cards">
+    <mat-card class="analytics-card total-machines">
+      <div class="card-title">Total Machines</div>
+      <div class="card-value">
+        <span class="card-number blue">{{ ana_totalMachines }}</span>
+        <mat-icon class="blue">precision_manufacturing</mat-icon>
+      </div>
+    </mat-card>
+    <mat-card class="analytics-card running-machines">
+      <div class="card-title">Running Machines</div>
+      <div class="card-value">
+        <span class="card-number green">{{ ana_runningMachines }}</span>
+        <mat-icon class="green">play_circle</mat-icon>
+      </div>
+    </mat-card>
+    <mat-card class="analytics-card average-oee">
+      <div class="card-title">Average OEE</div>
+      <div class="card-value">
+        <span class="card-number yellow">{{ ana_averageOEE }}%</span>
+        <mat-icon class="yellow">bar_chart</mat-icon>
+      </div>
+    </mat-card>
+    <mat-card class="analytics-card total-parts">
+      <div class="card-title">Total Parts</div>
+      <div class="card-value">
+        <span class="card-number orange">{{ ana_totalParts }}</span>
+        <mat-icon class="orange">precision_manufacturing</mat-icon>
+      </div>
+    </mat-card>
+  </div>
+  <div class="analytics-main-cards">
+    <mat-card class="analysis-card oee-analysis">
+      <div class="analysis-title">OEE Analysis</div>
+      <div class="analysis-scroll">
+        <div *ngFor="let m of ana_machines">
+          <div class="machine-row">
+            <span class="machine-name">{{ m.name }}</span>
+            <mat-progress-bar [value]="m.oee" color="primary"></mat-progress-bar>
+            <span class="machine-oee">{{ m.oee }}%</span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card class="analysis-card status-analysis">
+      <div class="analysis-title">Machine Status</div>
+      <div class="status-row maintenance">
+        <span class="status-dot"></span>
+        Maintenance
+        <span class="status-count">{{ ana_statusCounts.maintenance }} machines</span>
+        <span class="status-percent">{{ ana_statusPercentages.maintenance }}%</span>
+      </div>
+      <div class="status-row breakdown">
+        <span class="status-dot"></span>
+        Breakdown
+        <span class="status-count">{{ ana_statusCounts.breakdown }} machines</span>
+        <span class="status-percent">{{ ana_statusPercentages.breakdown }}%</span>
+      </div>
+      <div class="status-row idle">
+        <span class="status-dot"></span>
+        Idle
+        <span class="status-count">{{ ana_statusCounts.idle }} machines</span>
+        <span class="status-percent">{{ ana_statusPercentages.idle }}%</span>
+      </div>
+      <div class="status-row running">
+        <span class="status-dot"></span>
+        Running
+        <span class="status-count">{{ ana_statusCounts.running }} machines</span>
+        <span class="status-percent">{{ ana_statusPercentages.running }}%</span>
+      </div>
+    </mat-card>
+    <mat-card class="analysis-card cost-analysis">
+      <div class="analysis-title">Cost Analysis</div>
+      <div class="cost-total">
+        ₹{{ ana_totalCost | number }}
+        <span class="cost-label">Total Daily Cost</span>
+      </div>
+      <div class="analysis-scroll">
+        <div *ngFor="let m of ana_machines">
+          <div class="cost-row">
+            <span class="machine-name">{{ m.name }}</span>
+            <mat-progress-bar [value]="(m.cost / ana_totalCost) * 100" color="accent"></mat-progress-bar>
+            <span class="machine-cost">₹{{ m.cost | number }}</span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  <div class="analytics-bottom-cards">
+    <mat-card class="bottom-card">
+      <div class="bottom-title">Machine Efficiency Trends</div>
+      <div class="bottom-content">
+        <mat-icon>trending_up</mat-icon>
+        <div>
+          Efficiency trend visualization<br>
+          <span>Historical OEE data over time</span>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card class="bottom-card">
+      <div class="bottom-title">Production Forecast</div>
+      <div class="bottom-content">
+        <mat-icon>bar_chart</mat-icon>
+        <div>
+          Production forecast model<br>
+          <span>Predictive analysis based on current trends</span>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+<!-- Machine Details Section -->
+<div *ngIf="currentView === 'machine-details'">
+  <div class="machine-details-container">
+    <button mat-button (click)="det_goBack()" class="back-btn">
+      <mat-icon>arrow_back</mat-icon> Back
+    </button>
+    <h2 class="machine-title">{{ det_machine.id }}</h2>
+    <div class="metrics-cards-row">
+      <mat-card class="metrics-card">Runtime<br><span>{{ det_machine.runtime }}</span></mat-card>
+      <mat-card class="metrics-card">Idle Time<br><span>{{ det_machine.idle }}</span></mat-card>
+      <mat-card class="metrics-card">Break Down<br><span>{{ det_machine.breakdown }}</span></mat-card>
+      <mat-card class="metrics-card">OEE<br><span>{{ det_machine.oee }}</span></mat-card>
+      <mat-card class="metrics-card">Production Planned<br><span>{{ det_machine.planned }}</span></mat-card>
+      <mat-card class="metrics-card">PartId<br><span>{{ det_machine.partId }}</span></mat-card>
+      <mat-card class="metrics-card">Actual Planned<br><span>{{ det_machine.actual }}</span></mat-card>
+      <mat-card class="metrics-card">Employee Code<br><span>{{ det_machine.emp }}</span></mat-card>
+    </div>
+    <mat-card class="idle-reason-card">
+      <div class="idle-reason-title">Idle Reason</div>
+      <div class="idle-reason-row" *ngFor="let r of det_machine.idleReasons">
+        <div>{{ r.reason }}</div>
+        <div>{{ r.time }}</div>
+      </div>
+    </mat-card>
+    <div class="charts-row">
+      <mat-card class="chart-card">
+        <div class="chart-title">Time Distribution</div>
+        <canvas baseChart
+                [data]="det_pieChartData"
+                [type]="'pie'">
+        </canvas>
+      </mat-card>
+      <mat-card class="chart-card">
+        <div class="chart-title">Production Comparison</div>
+        <canvas baseChart
+                [data]="det_barChartData"
+                [type]="'bar'">
+        </canvas>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<!-- Master Data Section -->
+<div *ngIf="currentView === 'master-data'">
+  <!-- Add mas_ prefix to all variables and methods in the master data HTML -->
+  <!-- ... (You would update all references in the master-data.html to use mas_ prefix) ... -->
+</div>
+
+<!-- Reports Section -->
+<div *ngIf="currentView === 'reports'">
+  <!-- Add rep_ prefix to all variables and methods in the reports HTML -->
+  <!-- ... (You would update all references in the reports.html to use rep_ prefix) ... -->
+</div> 

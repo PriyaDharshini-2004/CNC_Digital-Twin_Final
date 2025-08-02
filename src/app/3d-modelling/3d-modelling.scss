@@ -1,0 +1,493 @@
+// Colors
+$background: #181c23;
+$card-bg: linear-gradient(135deg, #23283a 60%, #2c3142 100%);
+$card-bg-alt: linear-gradient(135deg, #1a1e2a 60%, #23283a 100%);
+$text-main: #fff;
+$text-secondary: #b0b0b0;
+$brand-green: #7fff00;
+$brand-blue: #00eaff;
+$brand-yellow: #ffb300;
+$brand-red: #ff5252;
+$brand-purple: #b388ff;
+$brand-orange: #ff6f00;
+$border-radius: 18px;
+$shadow: 0 4px 24px 0 #0008;
+
+// General
+:host {
+  display: block;
+  background: $background;
+  min-height: 100vh;
+  color: $text-main;
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+}
+
+.modelling-container {
+  padding: 32px;
+  background: $background;
+  min-height: calc(100vh - 120px);
+  
+  .page-header {
+    margin-bottom: 24px;
+    
+    
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: $text-main;
+    }
+    
+    p {
+      margin: 0 0 20px 0;
+      color: $text-secondary;
+      font-size: 1.1rem;
+    }
+
+    .machine-selector {
+      margin-top: 16px;
+      
+      .machine-dropdown {
+        width: 300px;
+        
+        ::ng-deep .mat-mdc-form-field {
+          .mat-mdc-form-field-flex {
+            background-color: $card-bg-alt;
+            border-radius: 8px;
+          }
+          
+          .mat-mdc-form-field-outline {
+            border-color: #444;
+          }
+          
+          .mat-mdc-form-field-outline-thick {
+            border-color: $brand-green;
+          }
+
+          .mat-mdc-form-field-label {
+            color: $text-secondary;
+          }
+
+          .mat-mdc-select-value {
+            color: $text-main;
+          }
+
+          .mat-mdc-select-arrow {
+            color: $text-secondary;
+          }
+        }
+      }
+    }
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 24px;
+    grid-template-areas:
+      "viewer controls"
+      "status controls";
+
+    .model-viewer-card {
+      grid-area: viewer;
+      min-height: 400px;
+      background: $card-bg;
+      border-radius: $border-radius;
+      box-shadow: $shadow;
+      color: $text-main;
+      
+      
+      .viewer-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 300px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 8px;
+        color: white;
+        text-align: center;
+        
+        .placeholder-icon {
+          font-size: 64px;
+          width: 64px;
+          height: 64px;
+          margin-bottom: 16px;
+          opacity: 0.8;
+        }
+        
+        p {
+          margin: 8px 0;
+          font-size: 18px;
+          font-weight: 500;
+          
+          &.subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+    
+    .controls-card {
+      grid-area: controls;
+      background: $card-bg;
+      border-radius: $border-radius;
+      box-shadow: $shadow;
+      color: $text-main;
+      max-height: fit-content;
+      .control-group {
+        margin-bottom: 24px;
+        
+        h4 {
+          margin: 0 0 12px 0;
+          font-size: 14px;
+          font-weight: 500;
+          color: $text-secondary;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        
+        .control-btn {
+          display: block;
+          width: 100%;
+          text-align: left;
+          margin-bottom: 8px;
+          padding: 8px 12px;
+          border-radius: 4px;
+          transition: background-color 0.2s;
+          color: $text-main;
+          background: transparent;
+          border: none;
+          
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+          }
+          
+          mat-icon {
+            margin-right: 8px;
+            color: $brand-blue;
+          }
+        }
+      }
+    }
+
+    .library-card {
+      grid-area: library;
+      background: $card-bg;
+      border-radius: $border-radius;
+      box-shadow: $shadow;
+      color: $text-main;
+      
+      .model-list {
+        .model-item {
+          display: flex;
+          align-items: center;
+          padding: 12px 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          
+          &:last-child {
+            border-bottom: none;
+          }
+          
+          mat-icon {
+            margin-right: 12px;
+            color: $brand-green;
+          }
+          
+          span {
+            flex: 1;
+            font-size: 14px;
+            color: $text-main;
+          }
+          
+          button {
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            color: $brand-blue;
+            
+            &:hover {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+
+    .properties-card {
+      grid-area: properties;
+      background: $card-bg;
+      border-radius: $border-radius;
+      box-shadow: $shadow;
+      color: $text-main;
+      
+      .property-list {
+        .property-item {
+          display: flex;
+          justify-content: space-between;
+          padding: 8px 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          
+          &:last-child {
+            border-bottom: none;
+          }
+          
+          .property-label {
+            font-weight: 500;
+            color: $text-secondary;
+            font-size: 14px;
+          }
+          
+          .property-value {
+            color: $text-main;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+
+  .status-card {
+    grid-area: status;
+    background: $card-bg;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    color: $text-main;
+    margin-top: 24px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+
+    mat-card-header {
+      padding-bottom: 8px;
+      mat-card-title {
+        display: flex;
+        align-items: center;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: $text-main;
+        mat-icon {
+          margin-right: 8px;
+          color: $brand-blue;
+        }
+      }
+    }
+    mat-card-content {
+      padding-top: 0;
+      color: $text-main;
+      .status-section {
+        margin-bottom: 18px;
+      }
+      .status-heading {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: $brand-blue;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        margin-top: 8px;
+      }
+      .status-divider {
+        height: 1px;
+        background: rgba(255,255,255,0.07);
+        margin: 12px 0 16px 0;
+        border-radius: 2px;
+      }
+      .status-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px 24px;
+      }
+      .status-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1rem;
+        &.wide {
+          grid-column: span 2;
+        }
+        mat-icon {
+          font-size: 1.2rem;
+          color: $brand-blue;
+        }
+        .status-label {
+          color: $text-secondary;
+          font-weight: 500;
+          margin-right: 2px;
+        }
+        .status-value {
+          font-weight: 600;
+          color: $text-main;
+        }
+        .oee-value {
+          color: $brand-green;
+          font-size: 1.1rem;
+          margin-right: 8px;
+        }
+        .program-value {
+          font-family: 'Fira Mono', 'Consolas', monospace;
+          background: rgba(0,234,255,0.08);
+          border-radius: 4px;
+          padding: 2px 8px;
+          font-size: 1.05rem;
+          color: $brand-blue;
+          margin-left: 4px;
+        }
+        .door-dropdown {
+          min-width: 100px;
+          margin: 0;
+          ::ng-deep .mat-mdc-form-field-flex {
+            background: $card-bg-alt;
+          }
+          ::ng-deep .mat-mdc-select-value-text {
+            color: $text-main !important;
+          }
+        }
+        .oee-bar {
+          flex: 1;
+          height: 8px;
+          border-radius: 6px;
+          margin-left: 8px;
+          min-width: 80px;
+          max-width: 120px;
+          background: $card-bg-alt;
+        }
+      }
+    }
+  }
+
+  // Responsive design
+  @media (max-width: 1024px) {
+    .content-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "viewer"
+        "status"
+        "controls";
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 16px;
+    
+    .page-header h1 {
+      font-size: 1.5rem;
+    }
+    
+    .content-grid {
+      gap: 16px;
+    }
+  }
+}
+
+// Machine dropdown option styling
+.machine-option {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+  
+  .machine-name {
+    font-weight: 500;
+    color: $text-main;
+    font-size: 14px;
+  }
+  
+  .machine-description {
+    font-size: 12px;
+    color: $text-secondary;
+    margin-top: 2px;
+  }
+}
+
+// Material card overrides for consistent styling
+mat-card {
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  background: $card-bg;
+  color: $text-main;
+  
+  mat-card-header {
+    padding-bottom: 16px;
+    
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 500;
+      color: $text-main;
+      
+      mat-icon {
+        margin-right: 8px;
+        color: $brand-green;
+      }
+    }
+    
+    mat-card-subtitle {
+      color: $text-secondary;
+      font-size: 14px;
+    }
+  }
+  
+  mat-card-content {
+    padding-top: 0;
+    color: $text-main;
+  }
+  
+  mat-card-actions {
+    padding: 16px;
+    padding-top: 0;
+    
+    button {
+      margin-right: 8px;
+      color: $brand-blue;
+      
+      mat-icon {
+        color: $brand-blue;
+      }
+    }
+  }
+}
+
+// Material form field overrides
+::ng-deep .mat-mdc-select-panel {
+  background: $card-bg-alt;
+  color: $text-main;
+  
+  .mat-mdc-option {
+    color: $text-main !important;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    &.mat-mdc-option-active {
+      background: rgba(127, 255, 0, 0.2);
+    }
+
+    .mat-mdc-option-text {
+      color: $text-main !important;
+    }
+  }
+}
+
+// Additional dropdown styling for better visibility
+::ng-deep .mat-mdc-select-value-text {
+  color: $text-main !important;
+}
+
+::ng-deep .mat-mdc-select-arrow {
+  color: $text-secondary !important;
+}
+
+::ng-deep .mat-mdc-form-field-label {
+  color: $text-secondary !important;
+}
+
+::ng-deep .mat-mdc-form-field-outline {
+  color: #444 !important;
+}
+
+::ng-deep .mat-mdc-form-field-outline-thick {
+  color: $brand-green !important;
+} 

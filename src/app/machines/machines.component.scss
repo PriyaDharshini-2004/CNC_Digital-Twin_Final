@@ -1,0 +1,30 @@
+/* === Dashboard Styles === */
+@import '../dashboard/dashboard.scss';
+
+/* === Analytics Styles === */
+@import '../analytics/analytics.scss';
+
+/* === Machine Details Styles === */
+@import '../machine-details/machine-details.scss';
+
+/* === Master Data Styles === */
+@import '../master-data/master-data.scss';
+
+/* === Reports Styles === */
+@import '../reports/reports.scss';
+
+:host {
+  display: block;
+  padding: 32px;
+  background: #181c23;
+  color: #fff;
+}
+
+mat-tab-group {
+  margin-bottom: 32px;
+}
+
+h2 {
+  margin-top: 0;
+  color: #00eaff;
+} 

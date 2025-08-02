@@ -1,0 +1,47 @@
+<!-- Header Bar -->
+<div class="header">
+  <div class="header-title">
+    <span class="brand">CNC Digital Twin</span>
+    <span class="active-dot"></span>
+    <span class="subtitle">Real-time Monitoring Active</span>
+  </div>
+  <div class="header-user">
+    <span class="last-updated">Last Updated<br>{{ lastUpdated }}</span>
+    <button mat-icon-button class="user-btn">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </div>
+</div>
+
+<!-- Tabs: Using router navigation -->
+<mat-tab-group *ngIf="!router.url.startsWith('/machine-details')" class="main-tabs" [selectedIndex]="selectedTabIndex" (selectedIndexChange)="onTabChange($event)">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span style="color:white">Dashboard</span>
+    </ng-template>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span style="color:white">Analytics</span>
+    </ng-template>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span style="color:white">Master Data</span>
+    </ng-template>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span style="color:white">Reports</span>
+    </ng-template>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span style="color:white">3D Modelling</span>
+    </ng-template>
+  </mat-tab>
+  
+</mat-tab-group>
+
+<!-- Routed Page -->
+<router-outlet></router-outlet>

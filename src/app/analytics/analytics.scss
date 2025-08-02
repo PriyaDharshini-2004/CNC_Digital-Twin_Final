@@ -1,0 +1,282 @@
+$background: #181c23;
+$card-bg: #23283a;
+$card-bg-alt: #1a1e2a;
+$text-main: #fff;
+$text-secondary: #b0b0b0;
+$brand-green: #7fff00;
+$brand-blue: #00eaff;
+$brand-yellow: #ffb300;
+$brand-red: #ff5252;
+$brand-purple: #b388ff;
+$brand-orange: #ff6f00;
+$border-radius: 16px;
+$shadow: 0 2px 16px 0 #0006;
+
+:host {
+  display: block;
+  background: $background;
+  min-height: 100vh;
+  color: $text-main;
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+}
+
+.analytics-header {
+  margin: 32px 32px 0 32px;
+  .analytics-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $text-main;
+    margin-bottom: 4px;
+  }
+  .analytics-subtitle {
+    font-size: 1.1rem;
+    color: $text-secondary;
+    margin-bottom: 24px;
+  }
+}
+
+.analytics-top-cards {
+  display: flex;
+  gap: 24px;
+  margin: 0 32px 24px 32px;
+  .analytics-card {
+    flex: 1;
+    min-width: 200px;
+    background: $card-bg;
+    color: $text-main;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .card-title {
+      font-size: 1.1rem;
+      color: $text-secondary;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .card-value {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      .card-number {
+        font-size: 2.2rem;
+        font-weight: 700;
+        &.blue { color: $brand-blue; }
+        &.green { color: $brand-green; }
+        &.yellow { color: $brand-yellow; }
+        &.orange { color: $brand-orange; }
+      }
+      mat-icon {
+        font-size: 2rem;
+        margin-left: 12px;
+        opacity: 0.8;
+      }
+    }
+    &.total-machines .card-value mat-icon {
+      color: $brand-blue;
+    }
+    &.running-machines .card-value mat-icon {
+      color: $brand-green;
+    }
+    &.average-oee .card-value mat-icon {
+      color: $brand-yellow;
+    }
+    &.total-parts .card-value mat-icon {
+      color: $brand-orange;
+    }
+  }
+}
+
+.analytics-main-cards {
+  display: flex;
+  gap: 24px;
+  margin: 0 32px 24px 32px;
+  .analysis-card {
+    flex: 1;
+    min-width: 250px;
+    background: $card-bg;
+    color: $text-main;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    .analysis-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: $text-main;
+      margin-bottom: 16px;
+    }
+    &.oee-analysis .analysis-title {
+      margin-bottom: 22px;
+    }
+    &.status-analysis .analysis-title {
+      margin-bottom: 22px;
+    }
+    &.cost-analysis .analysis-title {
+      margin-bottom: 22px;
+    }
+    .analysis-scroll {
+      max-height: 260px;
+      overflow-y: auto;
+      padding-right: 4px;
+      .machine-row, .cost-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        .machine-name {
+          width: 80px;
+          font-weight: 500;
+          color: $text-secondary;
+        }
+        mat-progress-bar {
+          flex: 1;
+          height: 8px;
+          border-radius: 4px;
+          background: $card-bg-alt;
+        }
+        .machine-oee, .machine-cost {
+          width: 48px;
+          text-align: right;
+          font-weight: 600;
+          color: $brand-green;
+        }
+        .machine-cost { color: $brand-yellow; }
+      }
+    }
+    &.cost-analysis {
+      .analysis-title {
+        margin-bottom: 22px;
+        font-size: 1.35rem;
+      }
+      .cost-total {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: $brand-yellow;
+        margin-bottom: 22px;
+        padding: 18px 0 18px 0;
+        .cost-label {
+          font-size: 1.1rem;
+          color: $text-secondary;
+          font-weight: 400;
+          margin-left: 0;
+        }
+      }
+      .analysis-scroll {
+        padding: 0 12px 12px 12px;
+      }
+      .cost-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+        font-size: 1rem;
+        .machine-name {
+          width: 80px;
+          font-weight: 500;
+          color: $text-secondary;
+        }
+        mat-progress-bar {
+          flex: 1;
+          height: 8px;
+          border-radius: 4px;
+          background: $card-bg-alt;
+        }
+        .machine-cost {
+          width: 80px;
+          text-align: right;
+          font-weight: 700;
+          color: $brand-yellow;
+          font-size: 1rem;
+        }
+      }
+    }
+    &.status-analysis {
+      .status-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 22px;
+        font-size: 1.25rem;
+        font-weight: 500;
+        .status-dot {
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          display: inline-block;
+        }
+        &.maintenance .status-dot { background: $brand-purple; }
+        &.breakdown .status-dot { background: $brand-red; }
+        &.idle .status-dot { background: $brand-yellow; }
+        &.running .status-dot { background: $brand-green; }
+        .status-count {
+          margin-left: auto;
+          font-weight: 700;
+          color: $text-main;
+        }
+        .status-percent {
+          margin-left: 8px;
+          color: $text-secondary;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+}
+
+.analytics-bottom-cards {
+  display: flex;
+  gap: 24px;
+  margin: 0 32px 32px 32px;
+  .bottom-card {
+    flex: 1;
+    min-width: 250px;
+    background: $card-bg;
+    color: $text-main;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    .bottom-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: $text-main;
+      margin-bottom: 16px;
+    }
+    .bottom-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      mat-icon {
+        font-size: 2.5rem;
+        color: $brand-green;
+      }
+      div {
+        font-size: 1rem;
+        color: $text-secondary;
+        span { font-size: 0.95rem; color: $text-secondary; }
+      }
+    }
+  }
+}
+
+.analytics-title,
+.analysis-title,
+.card-title,
+.cost-label,
+.bottom-title {
+  color: #fff !important;
+}

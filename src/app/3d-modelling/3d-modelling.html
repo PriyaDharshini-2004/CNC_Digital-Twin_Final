@@ -1,0 +1,273 @@
+<div class="modelling-container">
+  <div class="page-header" >
+    <h1>3D Modelling</h1>
+    <p>Create and manage 3D models for CNC machine visualization</p>
+    
+    <!-- Machine Selection Dropdown -->
+    <div class="machine-selector">
+      <mat-form-field appearance="outline" class="machine-dropdown">
+        <mat-label>Select CNC Machine</mat-label>
+        <mat-select [formControl]="machineSelect">
+          <mat-option *ngFor="let machine of machines" [value]="machine.value">
+            <div class="machine-option">
+              <span class="machine-name">{{ machine.label }}</span>
+              <span class="machine-description">{{ machine.description }}</span>
+            </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="content-grid">
+   <mat-card class="model-viewer-card">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon>view_in_ar</mat-icon>
+      3D Model Viewer
+    </mat-card-title>
+    <mat-card-subtitle>Interactive 3D visualization</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div style="display: flex; justify-content: space-between; gap: 20px;">
+      <!-- Main Large Model -->
+      <div style="flex: 2; width: 1500px;">
+        <model-viewer
+          [src]="selectedModelPath"
+          alt="3D model"
+          auto-rotate
+          camera-controls
+          style="width: 100%; height: 500px;">
+        </model-viewer>
+      </div>
+
+      <!-- Right Column: 3 Mini Models -->
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 15px;">
+        <div>
+          <!-- <strong>Drilling Operation</strong> -->
+          <model-viewer
+            src="./assets/3d/Drill Bit_3D.glb"
+            alt="Drilling Operation"
+            auto-rotate
+            camera-controls
+            style="width: 100%; height: 140px;">
+          </model-viewer>
+        </div>
+
+        <div>
+          <!-- <strong>Milling Operation</strong> -->
+          <model-viewer
+            src="./assets/3d/Mlling_3d.glb"
+            alt="Milling Operation"
+            auto-rotate
+            camera-controls
+            style="width: 100%; height: 140px;">
+          </model-viewer>
+        </div>
+
+        <div>
+          <!-- <strong>Part</strong> -->
+          <model-viewer
+            src="./assets/3d/PartGear.glb"
+            alt="Part"
+            auto-rotate
+            camera-controls
+            style="width: 100%; height: 140px;">
+          </model-viewer>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button color="primary" (click)="fullscreenModel()">
+      <mat-icon>fullscreen</mat-icon>
+      Fullscreen
+    </button>
+    <button mat-button color="accent" (click)="rotateModel()">
+      <mat-icon>rotate_right</mat-icon>
+      Rotate
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+    <!-- Status Card for CNC1(TM08) -->
+    <mat-card class="status-card" *ngIf="selectedMachine.value === 'cnc1'">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>info</mat-icon>
+          Status
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- MACHINE TIME STATUS -->
+        <div class="status-section">
+          <div class="status-heading">MACHINE TIME STATUS</div>
+          <div class="status-grid">
+            <div class="status-item">
+              <mat-icon>schedule</mat-icon>
+              <span class="status-label">Runtime:</span>
+              <span class="status-value">4hr 52m 51sec</span>
+            </div>
+            <div class="status-item">
+              <mat-icon>speed</mat-icon>
+              <span class="status-label">OEE:</span>
+              <span class="status-value oee-value">51.5%</span>
+              <mat-progress-bar class="oee-bar" color="primary" mode="determinate" [value]="92.3"></mat-progress-bar>
+            </div>
+            <div class="status-item">
+              <mat-icon>pause_circle_filled</mat-icon>
+              <span class="status-label">Idle:</span>
+              <span class="status-value">6hr 34m 54sec</span>
+            </div>
+            <div class="status-item">
+              <mat-icon>pan_tool</mat-icon>
+              <span class="status-label">Hold:</span>
+              <span class="status-value">2hr 20m 7sec</span>
+            </div>
+            <div class="status-item" [ngStyle]="{'color': getStatusColor(cnc1Status)}">
+  <mat-icon>circle</mat-icon>
+  <span class="status-label">CNC1 Status:</span>
+  <span class="status-value">{{ cnc1Status }}</span>
+</div>
+          </div>
+        </div>
+        <div class="status-divider"></div>
+        <!-- MACHINE STATE -->
+        <div class="status-section">
+          <div class="status-heading">MACHINE STATE</div>
+          <div class="status-grid">
+            <div class="status-item">
+              <mat-icon>precision_manufacturing</mat-icon>
+              <span class="status-label">Spindle:</span>
+              <span class="status-value">--</span>
+            </div>
+            <div class="status-item">
+              <mat-icon>trending_up</mat-icon>
+              <span class="status-label">Feed:</span>
+              <span class="status-value">--</span>
+            </div>
+            <div class="status-item wide">
+              <mat-icon>meeting_room</mat-icon>
+              <span class="status-label">Door Status:</span>
+              <span class="status-value">Closed</span>
+            </div>
+          </div>
+        </div>
+        <div class="status-divider"></div>
+        <!-- PROGRAM & CYCLES -->
+        <div class="status-section">
+          <div class="status-heading">PROGRAM & CYCLES</div>
+          <div class="status-grid">
+            <div class="status-item wide">
+              <mat-icon>play_circle</mat-icon>
+              <span class="status-label">Running Program:</span>
+              <span class="status-value program-value">C22201600000_S106</span>
+            </div>
+            <div class="status-item">
+              <mat-icon>check_circle</mat-icon>
+              <span class="status-label">Finished Cycle:</span>
+              <span class="status-value">9</span>
+            </div>
+            <div class="status-item">
+              <mat-icon>cancel</mat-icon>
+              <span class="status-label">Unfinished Cycle:</span>
+              <span class="status-value">7</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <!-- Status Card for CNC2(TC06) -->
+<mat-card class="status-card" *ngIf="selectedMachine.value === 'cnc2'">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon>info</mat-icon>
+      Status
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <!-- MACHINE TIME STATUS -->
+    <div class="status-section">
+      <div class="status-heading">MACHINE TIME STATUS</div>
+      <div class="status-grid">
+        <div class="status-item">
+          <mat-icon>schedule</mat-icon>
+          <span class="status-label">Runtime:</span>
+          <span class="status-value">1hr 4m 9sec</span>
+        </div>
+        <div class="status-item">
+          <mat-icon>speed</mat-icon>
+          <span class="status-label">OEE:</span>
+          <span class="status-value oee-value">98.6%</span>
+          <mat-progress-bar class="oee-bar" color="primary" mode="determinate" [value]="85.6"></mat-progress-bar>
+        </div>
+        <div class="status-item">
+          <mat-icon>pause_circle_filled</mat-icon>
+          <span class="status-label">Idle:</span>
+          <span class="status-value">1hr 8m 33sec</span>
+        </div>
+        <div class="status-item">
+          <mat-icon>pan_tool</mat-icon>
+          <span class="status-label">Hold:</span>
+          <span class="status-value">43m 31sec</span>
+        </div>
+        <div class="status-item" [ngStyle]="{'color': getStatusColor(cnc2Status)}">
+  <mat-icon>circle</mat-icon>
+  <span class="status-label">CNC2 Status:</span>
+  <span class="status-value">{{ cnc2Status }}</span>
+</div>
+      </div>
+    </div>
+    <div class="status-divider"></div>
+    <!-- MACHINE STATE -->
+    <div class="status-section">
+      <div class="status-heading">MACHINE STATE</div>
+      <div class="status-grid">
+        <div class="status-item">
+          <mat-icon>precision_manufacturing</mat-icon>
+          <span class="status-label">Spindle:</span>
+          <span class="status-value">--</span>
+        </div>
+        <div class="status-item">
+          <mat-icon>trending_up</mat-icon>
+          <span class="status-label">Feed:</span>
+          <span class="status-value">--</span>
+        </div>
+        <div class="status-item wide">
+          <mat-icon>meeting_room</mat-icon>
+          <span class="status-label">Door Status:</span>
+          <span class="status-value">Closed</span>
+        </div>
+      </div>
+    </div>
+    <div class="status-divider"></div>
+    <!-- PROGRAM & CYCLES -->
+    <div class="status-section">
+      <div class="status-heading">PROGRAM & CYCLES</div>
+      <div class="status-grid">
+        <div class="status-item wide">
+          <mat-icon>play_circle</mat-icon>
+          <span class="status-label">Running Program:</span>
+          <span class="status-value program-value">CH_25X15_A184013011_S3</span>
+        </div>
+        <div class="status-item">
+          <mat-icon>check_circle</mat-icon>
+          <span class="status-label">Finished Cycle:</span>
+          <span class="status-value">45</span>
+        </div>
+        <div class="status-item">
+          <mat-icon>cancel</mat-icon>
+          <span class="status-label">Unfinished Cycle:</span>
+          <span class="status-value">2</span>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+   
+  </div>
+</div> 

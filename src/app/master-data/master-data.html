@@ -1,0 +1,225 @@
+<!-- === master-data.html === -->
+<div class="master-data-header">
+  <div class="title">Master Data Management</div>
+  <div class="subtitle">Manage all system master data</div>
+</div>
+
+<div class="summary-cards">
+  <mat-card *ngFor="let card of summary" class="summary-card">
+    <mat-icon>{{ card.icon }}</mat-icon>
+    <div class="summary-value">{{ card.value }}</div>
+    <div class="summary-label">{{ card.label }}</div>
+  </mat-card>
+</div>
+
+<div class="main-content">
+  <mat-card class="form-card">
+    <mat-tab-group [(selectedIndex)]="selectedFormTab">
+      <mat-tab *ngFor="let tab of formTabs">
+        <ng-template mat-tab-label>
+          <span style="color: white">{{ tab.label }}</span>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+
+    <div class="form-content">
+      <!-- Machines Form -->
+      <form *ngIf="selectedFormTab === 0" autocomplete="off">
+        <div class="form-title">Add New Machine</div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput placeholder="Machine Name" [(ngModel)]="machine.name" name="machineName"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Machine Make" [(ngModel)]="machine.make" name="machineMake"></mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput placeholder="Machine Type" [(ngModel)]="machine.type" name="machineType"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput type="date" placeholder="Last Maintenance Date" [(ngModel)]="machine.maintenanceDate" name="maintenanceDate"></mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" [disabled]="!isMachineFormValid()" (click)="createMachine()">Create Machine</button>
+      </form>
+
+      <!-- Tools Form -->
+      <form *ngIf="selectedFormTab === 1" autocomplete="off">
+        <div class="form-title">Add New Tool</div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput placeholder="Tool Name" [(ngModel)]="tool.name" name="toolName"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Tool ID" [(ngModel)]="tool.toolId" name="toolId"></mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput type="date" placeholder="Purchased On" [(ngModel)]="tool.purchasedOn" name="purchasedOn"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Tool Life" [(ngModel)]="tool.life" name="toolLife"></mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput placeholder="Tool Length" [(ngModel)]="tool.length" name="toolLength"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Tool Die" [(ngModel)]="tool.die" name="toolDie"></mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput placeholder="Material" [(ngModel)]="tool.material" name="toolMaterial"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Work Time" [(ngModel)]="tool.workTime" name="workTime"></mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput type="date" placeholder="Last Used Date" [(ngModel)]="tool.lastUsed" name="lastUsed"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Supplier" [(ngModel)]="tool.supplier" name="toolSupplier"></mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" [disabled]="!isToolFormValid()" (click)="createTool()">Create Tool</button>
+      </form>
+
+      <!-- Parts Form -->
+      <form *ngIf="selectedFormTab === 2" autocomplete="off">
+        <div class="form-title">Add New Part</div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput placeholder="Customer" [(ngModel)]="part.customer" name="customer"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Part Cycle Time" [(ngModel)]="part.cycleTime" name="cycleTime"></mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput placeholder="Process ID" [(ngModel)]="part.processId" name="processId"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Process Name" [(ngModel)]="part.processName" name="processName"></mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput placeholder="Program Number" [(ngModel)]="part.programNumber" name="programNumber"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Feed Rate" [(ngModel)]="part.feedRate" name="feedRate"></mat-form-field>
+        </div>
+        <mat-form-field appearance="fill" class="full-width">
+          <input matInput placeholder="Spindle Speed" [(ngModel)]="part.spindleSpeed" name="spindleSpeed">
+        </mat-form-field>
+        <button mat-raised-button color="primary" [disabled]="!isPartFormValid()" (click)="createPart()">Create Part</button>
+      </form>
+
+      <!-- Employees Form -->
+      <form *ngIf="selectedFormTab === 3" autocomplete="off">
+        <div class="form-title">Add New Employee</div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput placeholder="Emp. ID" [(ngModel)]="employee.id" name="empId"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Emp. Name" [(ngModel)]="employee.name" name="empName"></mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput type="date" placeholder="Date of Joining" [(ngModel)]="employee.joiningDate" name="joiningDate"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Wage" [(ngModel)]="employee.wage" name="wage"></mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput placeholder="Skill/Category" [(ngModel)]="employee.skill" name="skill"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Shift" [(ngModel)]="employee.shift" name="shift"></mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field appearance="fill"><input matInput placeholder="Phone" [(ngModel)]="employee.phone" name="phone"></mat-form-field>
+          <mat-form-field appearance="fill"><input matInput placeholder="Blood Group" [(ngModel)]="employee.bloodGroup" name="bloodGroup"></mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" [disabled]="!isEmployeeFormValid()" (click)="createEmployee()">Create Employee</button>
+      </form>
+    </div>
+  </mat-card>
+
+ 
+
+
+
+<mat-card class="list-card">
+  <mat-tab-group [(selectedIndex)]="selectedListTab">
+    <mat-tab *ngFor="let tab of listTabs">
+      <ng-template mat-tab-label>
+        <span style="color: white">{{ tab.label }}</span>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+
+  <div class="list-content">
+    <!-- Machines List -->
+    <div *ngIf="selectedListTab === 0">
+      <div class="list-header">
+        <span>Machine Name</span>
+        <span>Make</span>
+        <span>Type</span>
+        <span>Last Maintenance</span>
+      </div>
+      <div class="list-row" *ngFor="let m of machines">
+        <span>{{ m.name }}</span>
+        <span>{{ m.make }}</span>
+        <span>{{ m.type }}</span>
+        <span>{{ m.maintenanceDate }}</span>
+      </div>
+    </div>
+
+   <!-- Tools List -->
+<div *ngIf="selectedListTab === 1" style="background:#23283a; border-radius:16px; box-shadow:0 2px 16px 0 #0006; margin-left:0; padding:24px; overflow-x:auto;">
+  <div style="display:flex; flex-wrap:nowrap; gap:24px; min-width:max-content; align-items:center; font-size:1rem; font-weight:700; color:#ffffff; border-bottom:1px solid #333; padding-bottom:4px; margin-bottom:8px;">
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Name</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">ID</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Purchased On</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Life</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Length</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Die</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Material</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Work Time</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Last Used</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Supplier</span>
+  </div>
+
+  <div *ngFor="let t of tools" style="display:flex; flex-wrap:nowrap; gap:24px; min-width:max-content; align-items:center; font-size:1rem; color:#fff; margin-bottom:8px;">
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ t.name }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ t.toolId }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ t.purchasedOn }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ t.life }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ t.length }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ t.die }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ t.material }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ t.workTime }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ t.lastUsed }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ t.supplier }}</span>
+  </div>
+</div>
+
+    <!-- Parts List -->
+<div *ngIf="selectedListTab === 2" style="background:#23283a; border-radius:16px; box-shadow:0 2px 16px 0 #0006; margin-left:0; padding:24px; overflow-x:auto;">
+  <!-- Header Row -->
+  <div style="display:flex; flex-wrap:nowrap; gap:24px; min-width:max-content; align-items:center; font-size:1rem; font-weight:700; color:#ffffff; border-bottom:1px solid #333; padding-bottom:4px; margin-bottom:8px;">
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Customer</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Cycle Time</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Process ID</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Process Name</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Program Number</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Feed Rate</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Spindle Speed</span>
+  </div>
+
+  <!-- Data Rows -->
+  <div *ngFor="let p of parts" style="display:flex; flex-wrap:nowrap; gap:24px; min-width:max-content; align-items:center; font-size:1rem; color:#fff; margin-bottom:8px;">
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ p.customer }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ p.cycleTime }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ p.processId }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ p.processName }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ p.programNumber }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ p.feedRate }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ p.spindleSpeed }}</span>
+  </div>
+</div>
+
+
+    <!-- Employees List -->
+<div *ngIf="selectedListTab === 3" style="background:#23283a; border-radius:16px; box-shadow:0 2px 16px 0 #0006; margin-left:0; padding:24px; overflow-x:auto;">
+  <!-- Header Row -->
+  <div style="display:flex; flex-wrap:nowrap; gap:24px; min-width:max-content; align-items:center; font-size:1rem; font-weight:700; color:#ffffff; border-bottom:1px solid #333; padding-bottom:4px; margin-bottom:8px;">
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">EmpID</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">EmpName</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Date of Joining</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Wage</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Skill/Category</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Shift</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Phone</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Blood Group</span>
+  </div>
+
+  <!-- Data Rows -->
+  <div *ngFor="let e of employees" style="display:flex; flex-wrap:nowrap; gap:24px; min-width:max-content; align-items:center; font-size:1rem; color:#fff; margin-bottom:8px;">
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ e.id }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ e.name }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ e.joiningDate }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ e.wage }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ e.skill }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ e.shift }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ e.phone }}</span>
+    <span style="min-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ e.bloodGroup }}</span>
+  </div>
+</div>
+
+  </div>
+</mat-card>
+</div>

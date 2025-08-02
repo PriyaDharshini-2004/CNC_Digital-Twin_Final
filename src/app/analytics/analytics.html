@@ -1,0 +1,124 @@
+<div class="analytics-header">
+    <div class="analytics-title">Analytics Dashboard</div>
+    <div class="analytics-subtitle">Real-time performance metrics and insights</div>
+  </div>
+  
+  <!-- Top 4 Cards -->
+  <div class="analytics-top-cards">
+    <mat-card class="analytics-card total-machines">
+      <div class="card-title">Total Machines</div>
+      <div class="card-value">
+        <span class="card-number blue">30</span>
+        <mat-icon class="blue">precision_manufacturing</mat-icon>
+      </div>
+    </mat-card>
+    <mat-card class="analytics-card running-machines">
+      <div class="card-title">Running Machines</div>
+      <div class="card-value">
+        <span class="card-number green">8</span>
+        <mat-icon class="green">play_circle</mat-icon>
+      </div>
+    </mat-card>
+    <mat-card class="analytics-card average-oee">
+      <div class="card-title">Average OEE</div>
+      <div class="card-value">
+        <span class="card-number yellow">36.8%</span>
+        <mat-icon class="yellow">bar_chart</mat-icon>
+      </div>
+    </mat-card>
+    <mat-card class="analytics-card total-parts">
+      <div class="card-title">Total Parts</div>
+      <div class="card-value">
+        <span class="card-number orange">3,307</span>
+        <mat-icon class="orange">precision_manufacturing</mat-icon>
+      </div>
+    </mat-card>
+  </div>
+  
+  <!-- 3 Main Analysis Cards -->
+  <div class="analytics-main-cards">
+    <!-- OEE Analysis -->
+    <mat-card class="analysis-card oee-analysis">
+      <div class="analysis-title">OEE Analysis</div>
+      <div class="analysis-scroll">
+        <div *ngFor="let m of machines">
+          <div class="machine-row">
+            <span class="machine-name">{{ m.name }}</span>
+            <mat-progress-bar [value]="m.oee" color="primary"></mat-progress-bar>
+            <span class="machine-oee">{{ m.oee }}%</span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  
+    <!-- Machine Status -->
+    <mat-card class="analysis-card status-analysis">
+      <div class="analysis-title">Machine Status</div>
+      <div class="status-row maintenance">
+        <span class="status-dot"></span>
+        Maintenance
+        <span class="status-count">{{ statusCounts.maintenance }} machines</span>
+        <span class="status-percent">{{ statusPercentages.maintenance }}%</span>
+      </div>
+      <div class="status-row breakdown">
+        <span class="status-dot"></span>
+        Breakdown
+        <span class="status-count">{{ statusCounts.breakdown }} machines</span>
+        <span class="status-percent">{{ statusPercentages.breakdown }}%</span>
+      </div>
+      <div class="status-row idle">
+        <span class="status-dot"></span>
+        Idle
+        <span class="status-count">{{ statusCounts.idle }} machines</span>
+        <span class="status-percent">{{ statusPercentages.idle }}%</span>
+      </div>
+      <div class="status-row running">
+        <span class="status-dot"></span>
+        Running
+        <span class="status-count">{{ statusCounts.running }} machines</span>
+        <span class="status-percent">{{ statusPercentages.running }}%</span>
+      </div>
+    </mat-card>
+  
+    <!-- Cost Analysis -->
+    <mat-card class="analysis-card cost-analysis">
+      <div class="analysis-title">Cost Analysis</div>
+      <div class="cost-total">
+        ₹{{ totalCost | number }}
+        <span class="cost-label">Total Daily Cost</span>
+      </div>
+      <div class="analysis-scroll">
+        <div *ngFor="let m of machines">
+          <div class="cost-row">
+            <span class="machine-name">{{ m.name }}</span>
+            <mat-progress-bar [value]="(m.cost / totalCost) * 100" color="accent"></mat-progress-bar>
+            <span class="machine-cost">₹{{ m.cost | number }}</span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  
+  <!-- Bottom 2 Cards -->
+  <div class="analytics-bottom-cards">
+    <mat-card class="bottom-card">
+      <div class="bottom-title">Machine Efficiency Trends</div>
+      <div class="bottom-content">
+        <mat-icon>trending_up</mat-icon>
+        <div>
+          Efficiency trend visualization<br>
+          <span>Historical OEE data over time</span>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card class="bottom-card">
+      <div class="bottom-title">Production Forecast</div>
+      <div class="bottom-content">
+        <mat-icon>bar_chart</mat-icon>
+        <div>
+          Production forecast model<br>
+          <span>Predictive analysis based on current trends</span>
+        </div>
+      </div>
+    </mat-card>
+  </div>

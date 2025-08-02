@@ -1,0 +1,32 @@
+@use '@angular/material' as mat;
+
+// 1. Define a color palette
+$primary-palette: mat.define-palette(mat.$deep-purple-palette);
+$accent-palette: mat.define-palette(mat.$amber-palette);
+$warn-palette: mat.define-palette(mat.$red-palette);
+
+// 2. Create a dark theme using those palettes
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $primary-palette,
+    accent: $accent-palette,
+    warn: $warn-palette
+  )
+));
+
+// 3. Include component themes (MUST come after theme declaration)
+@include mat.all-component-themes($dark-theme);
+
+// ✅ 4. Custom tab styles for white text and purple ink bar
+.mat-tab-label {
+  color: white !important;
+}
+
+.mat-tab-label.mat-tab-label-active {
+  color: white !important;
+  font-weight: 600;
+}
+
+.mat-ink-bar {
+  background-color: #a259ff !important;
+}

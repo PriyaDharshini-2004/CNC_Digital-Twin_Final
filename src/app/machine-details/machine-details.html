@@ -1,0 +1,46 @@
+<div class="machine-details-container">
+  <button mat-button (click)="goBack()" class="back-btn">
+    <mat-icon>arrow_back</mat-icon> Back
+  </button>
+  <h2 class="machine-title">{{ machine.id }}</h2>
+
+  <div class="metrics-cards-row">
+    <mat-card class="metrics-card">Runtime<br><span>{{ machine.runtime }}</span></mat-card>
+    <mat-card class="metrics-card">Idle Time<br><span>{{ machine.idle }}</span></mat-card>
+    <mat-card class="metrics-card">Break Down<br><span>{{ machine.breakdown }}</span></mat-card>
+    <mat-card class="metrics-card">OEE<br><span>{{ machine.oee }}</span></mat-card>
+    <mat-card class="metrics-card">Production Planned<br><span>{{ machine.planned }}</span></mat-card>
+    <mat-card class="metrics-card">PartId<br><span>{{ machine.partId }}</span></mat-card>
+    <mat-card class="metrics-card">Actual Planned<br><span>{{ machine.actual }}</span></mat-card>
+    <mat-card class="metrics-card">Employee Code<br><span>{{ machine.emp }}</span></mat-card>
+  </div>
+
+  <mat-card class="idle-reason-card">
+    <div class="idle-reason-title">Idle Reason</div>
+    <div class="idle-reason-row" *ngFor="let r of machine.idleReasons">
+      <div>{{ r.reason }}</div>
+      <div>{{ r.time }}</div>
+    </div>
+  </mat-card>
+
+
+
+  <div class="charts-row">
+    <mat-card class="chart-card">
+      <div class="chart-title">Time Distribution</div>
+      <canvas baseChart
+              [data]="pieChartData"
+              [type]="'pie'">
+      </canvas>
+    </mat-card>
+  
+    <mat-card class="chart-card">
+      <div class="chart-title">Production Comparison</div>
+      <canvas baseChart
+              [data]="barChartData"
+              [type]="'bar'">
+      </canvas>
+    </mat-card>
+  </div>
+  
+</div> 
