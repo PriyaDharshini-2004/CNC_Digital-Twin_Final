@@ -10,7 +10,7 @@ import { MasterDataComponent } from './master-data/master-data';
 import { ReportsComponent } from './reports/reports';
 import { Modelling3dComponent } from './3d-modelling/3d-modelling';
 import { MachineDetailsComponent } from './machine-details/machine-details';
-
+import { MatMenuModule } from '@angular/material/menu';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -25,7 +25,8 @@ import { MachineDetailsComponent } from './machine-details/machine-details';
     ReportsComponent,
     Modelling3dComponent,
     MachineDetailsComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatMenuModule,
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.scss'],
@@ -42,6 +43,12 @@ export class AppComponent {
       this.syncTabWithRoute();
     });
   }
+  logout(): void {
+  // Example logout logic
+  console.log('Logging out...');
+  // Redirect, clear tokens, etc.
+}
+
 
   onTabChange(index: number): void {
     this.selectedTabIndex = index;

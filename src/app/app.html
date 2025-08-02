@@ -5,12 +5,23 @@
     <span class="active-dot"></span>
     <span class="subtitle">Real-time Monitoring Active</span>
   </div>
-  <div class="header-user">
-    <span class="last-updated">Last Updated<br>{{ lastUpdated }}</span>
-    <button mat-icon-button class="user-btn">
-      <mat-icon>account_circle</mat-icon>
+ <div class="header-user">
+  <span class="last-updated">Last Updated<br>{{ lastUpdated }}</span>
+
+  <!-- User button with menu trigger -->
+  <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-btn">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+
+  <!-- Dropdown menu -->
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
     </button>
-  </div>
+  </mat-menu>
+</div>
+
 </div>
 
 <!-- Tabs: Using router navigation -->

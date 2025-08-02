@@ -30,7 +30,7 @@ export class DashboardComponent {
   constructor(private router: Router) {}
 
   machineCards = [
-    { title: 'CNC-001', status: 'idle', part: '-', oee: '51.5%' },
+    { title: 'CNC-001', status: 'idle', part: '-', oee: '51.5%', },
     { title: 'CNC-002', status: 'running', part: 'PRT-7891', oee: '98.6%' },
     { title: 'CNC-003', status: 'maintenance', part: '-', oee: '0%' },
     { title: 'CNC-004', status: 'breakdown', part: '-', oee: '0%' },

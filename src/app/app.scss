@@ -33,7 +33,8 @@
 
   .header-user {
     display: flex;
-    align-items: center;
+  align-items: center;
+  gap: 10px;
 
     .last-updated {
       font-size: 0.9rem;
