@@ -125,12 +125,17 @@ export class Modelling3dComponent implements AfterViewInit {
     return isDoorOpen ? 'Idle' : 'Running'; // You can enhance this logic
   }
 
-  getStatusColor(status: string): string {
-    switch (status) {
-      case 'Idle': return 'sandybrown';
-      case 'Breakdown': return 'red';
-      case 'Running': return 'green';
-      default: return 'gray';
-    }
+ getStatusClass(status: string): string {
+  switch (status.toLowerCase()) {
+    case 'running':
+      return 'status-running';
+    case 'idle':
+      return 'status-idle'
+    case 'breakdown':
+      return 'status-breakdown';;
+    default:
+      return '';
   }
+}
+
 }

@@ -126,11 +126,13 @@
               <span class="status-label">Hold:</span>
               <span class="status-value">2hr 20m 7sec</span>
             </div>
-            <div class="status-item" [ngStyle]="{'color': getStatusColor(cnc1Status)}">
-  <mat-icon>circle</mat-icon>
+            <div class="status-item">
   <span class="status-label">CNC1 Status:</span>
-  <span class="status-value">{{ cnc1Status }}</span>
+  <span class="status-badge" [ngClass]="getStatusClass(cnc1Status)">
+    {{ cnc1Status }}
+  </span>
 </div>
+
           </div>
         </div>
         <div class="status-divider"></div>
@@ -213,11 +215,13 @@
           <span class="status-label">Hold:</span>
           <span class="status-value">43m 31sec</span>
         </div>
-        <div class="status-item" [ngStyle]="{'color': getStatusColor(cnc2Status)}">
-  <mat-icon>circle</mat-icon>
-  <span class="status-label">CNC2 Status:</span>
-  <span class="status-value">{{ cnc2Status }}</span>
+       <div class="status-item">
+  <span class="status-label">CNC1 Status:</span>
+  <span class="status-badge" [ngClass]="getStatusClass(cnc1Status)">
+    {{ cnc1Status }}
+  </span>
 </div>
+
       </div>
     </div>
     <div class="status-divider"></div>
