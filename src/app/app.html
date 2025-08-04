@@ -58,3 +58,8 @@
 
 <!-- Routed Page -->
 <router-outlet></router-outlet>
+<ng-container *ngIf="!router.url.includes('/login')">
+  <footer class="app-footer">
+    All rights reserved by Dyna4cast Technologies @2025
+  </footer>
+</ng-container>
